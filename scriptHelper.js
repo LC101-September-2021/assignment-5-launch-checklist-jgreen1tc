@@ -31,7 +31,8 @@ function validateInput(testInput) {
     }
 
 
-function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
+function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) { 
+    //validation
     let pilotField = validateInput(pilot.value) 
     let copilotField = validateInput(copilot.value)
     let fuelLevelField = validateInput(fuelLevel.value)
@@ -45,16 +46,47 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
     }
     for(let i=0;i<2;i++){
         if(fields[i] === "Is a Number"){
-            alert("Pilot and co-pilot names must be strings")
+            alert("'Pilot Name' and 'Co-pilot Name' must be strings")
             break
         }
     }
     for(let i=2;i<fields.length;i++){
         if(fields[i] === "Not a Number"){
-            alert("Fuel levels and cargo mass must be numbers")
+            alert("'Fuel Level (L)' and 'Cargo Mass (kg)' must be numbers")
             break
         }
+    }
+    //updating
+    let pilotStatus = document.getElementById('pilotStatus');
+    let copilotStatus = document.getElementById('copilotStatus');
+    let fuelStatus = document.getElementById('fuelStatus');
+    let cargoStatus = document.getElementById('cargoStatus');
+    let launchStatus = document.getElementById('launchStatus');
+    let ready = true;
+
+    list.style.visibility = "visible"
+    pilotStatus.innerHTML = `${pilot.value} ready` 
+    copilotStatus.innerHTML = `${copilot.value} ready` 
+
+    if(fuelLevel.value < 10000){
+        fuelStatus.innerHTML = 'Fuel level too low for launch.'
+        ready = false
     } 
+ 
+    if(cargoMass.value > 10000){
+        cargoStatus.innerHTML = 'Cargo mass too high for launch.'
+        ready = false
+    }  
+
+    if(ready){ 
+        fuelStatus.innerHTML = 'Fuel level high enough for launch'
+        cargoStatus.innerHTML = 'Cargo mass low enough for launch' 
+        launchStatus.style.color = 'green'
+        launchStatus.innerHTML = "Shuttle is ready for launch"
+    } else{
+        launchStatus.style.color = 'red'
+        launchStatus.innerHTML = 'Shuttle not ready for launch'
+    }
 }
 
 async function myFetch() {
