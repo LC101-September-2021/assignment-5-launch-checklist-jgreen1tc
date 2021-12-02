@@ -2,6 +2,8 @@
 require('isomorphic-fetch');
 
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
+   // let missionTarget = document.getElementById('missionTarget')
+   // missionTarget.innerHTML =
    // Here is the HTML formatting for our mission target div.
                 /*
                 `<h2>Mission Destination</h2>
@@ -38,21 +40,25 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
     let fuelLevelField = validateInput(fuelLevel.value)
     let cargoMassField= validateInput(cargoMass.value)
     let fields = [pilotField, copilotField, fuelLevelField, cargoMassField]
+    let ready = true;
     for(let i=0;i<fields.length;i++){
         if(fields[i] === "Empty"){
             alert("All fields required")
+            ready = false
             break
         }
     }
     for(let i=0;i<2;i++){
         if(fields[i] === "Is a Number"){
             alert("'Pilot Name' and 'Co-pilot Name' must be strings")
+            ready = false
             break
         }
     }
     for(let i=2;i<fields.length;i++){
         if(fields[i] === "Not a Number"){
             alert("'Fuel Level (L)' and 'Cargo Mass (kg)' must be numbers")
+            ready = false
             break
         }
     }
@@ -61,12 +67,19 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
     let copilotStatus = document.getElementById('copilotStatus');
     let fuelStatus = document.getElementById('fuelStatus');
     let cargoStatus = document.getElementById('cargoStatus');
-    let launchStatus = document.getElementById('launchStatus');
-    let ready = true;
+    let launchStatus = document.getElementById('launchStatus'); 
 
     list.style.visibility = "visible"
-    pilotStatus.innerHTML = `${pilot.value} ready` 
-    copilotStatus.innerHTML = `${copilot.value} ready` 
+    if(pilotField === "Not a Number"){
+        pilotStatus.innerHTML = `${pilot.value} ready` 
+    } else{
+        pilotStatus.innerHTML = "Pilot required"
+    }
+    if(copilotField === "Not a Number"){
+        copilotStatus.innerHTML = `${copilot.value} ready` 
+    } else{
+        copilotStatus.innerHTML = "Co-pilot required"
+    }
 
     if(fuelLevel.value < 10000){
         fuelStatus.innerHTML = 'Fuel level too low for launch.'
